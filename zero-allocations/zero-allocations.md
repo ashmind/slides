@@ -31,14 +31,6 @@ Andrey Shchekin<br>
 
 ---
 
-# Why?
-
-* Optimize bottleneck performance
-* Optimize library performance
-* Understand memory better
-
----
-
 # Do *you* need to aim for lower allocations?
 
 * Sometimes, if you have a good reason
@@ -50,13 +42,22 @@ Andrey Shchekin<br>
 
 # Do *you* need to aim for zero allocations?
 
-* Absolutely not, unless you are have a very convincing reason
+* Absolutely not
+    * unless you are have a very convincing reason
 
 ---
 
 ![bg left:60% width: 100%](./images/pepe-silvia.png)
 
 5 hours into implementing zero allocations, 5 lines of code written.
+
+---
+
+# Why?
+
+* Optimize bottleneck performance
+* Optimize library performance
+* Understand memory better
 
 ---
 
@@ -74,11 +75,11 @@ foreach (var line in File.ReadAllLines(input)) {
 Response.Write(results.Join("\r\n"));
 ```
 
-* Active memory ≥ 3 times file size
-    * 1: result of ReadAllLines
-    * 1: results list
-    * 1: joined string
-    * ?: when writing response
+* Active memory ≥ 3x file size
+    * 1x: all lines from ReadAllLines
+    * 1x: list of results
+    * 1x: joined string
+    * ?x: when writing response
 * Risky approach if expecting large files
 * Security: allows DoS attacks through large files
 
@@ -93,7 +94,7 @@ foreach (var line in File.ReadLines(path)) {
 }
 ```
 
-* Active memory ≈ 3 times max line size
+* Active memory ≈ 3x max line size
 * Cost: Cannot validate the whole file in advance
 * Cost: Errors will be intermixed with the output
 
@@ -402,6 +403,7 @@ var bytes4 = number < 1000 ? CachedBytes[number] : Format(number);
 
 # Further reading
 
+* [BenchmarkDotNet - MemoryDiagnoser](https://adamsitnik.com/the-new-Memory-Diagnoser/)
+* [System.IO.Pipelines: High performance IO in .NET](https://devblogs.microsoft.com/dotnet/system-io-pipelines-high-performance-io-in-net/)
 * https://github.com/Cysharp/ZString - Zero-allocation StringBuilder
 * https://github.com/Cysharp/ZLogger - Zero-allocation Logger
-* [System.IO.Pipelines: High performance IO in .NET](https://devblogs.microsoft.com/dotnet/system-io-pipelines-high-performance-io-in-net/)
